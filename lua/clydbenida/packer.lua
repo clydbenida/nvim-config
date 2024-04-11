@@ -26,6 +26,7 @@ return require('packer').startup(function(use)
   use ('theprimeagen/harpoon')
   use ('mbbill/undotree')
   use ('tpope/vim-fugitive')
+  use ('tpope/vim-eunuch')
   use {
 	  'VonHeikemen/lsp-zero.nvim',
 	  branch = 'v3.x',
@@ -45,6 +46,9 @@ return require('packer').startup(function(use)
 	  "williamboman/mason-lspconfig.nvim",
 	  "neovim/nvim-lspconfig",
   }
+  use ('mfussenegger/nvim-lint')
+  use("stevearc/conform.nvim")
+
 
 
 end) 
