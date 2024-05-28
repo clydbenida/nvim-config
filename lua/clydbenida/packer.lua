@@ -32,8 +32,8 @@ return require('packer').startup(function(use)
     branch = 'v3.x',
     requires = {
       --- Uncomment the two plugins below if you want to manage the language servers from neovim
-      -- {'williamboman/mason.nvim'},
-      -- {'williamboman/mason-lspconfig.nvim'},
+      { 'williamboman/mason.nvim' },
+      { 'williamboman/mason-lspconfig.nvim' },
 
       { 'neovim/nvim-lspconfig' },
       { 'hrsh7th/nvim-cmp' },
@@ -42,9 +42,6 @@ return require('packer').startup(function(use)
     }
   }
   use {
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
-    "neovim/nvim-lspconfig",
     "kabouzeid/nvim-lspinstall",
   }
   use('mfussenegger/nvim-lint')
@@ -53,4 +50,7 @@ return require('packer').startup(function(use)
   use { 'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async' }
   use "lukas-reineke/indent-blankline.nvim"
   use "luukvbaal/statuscol.nvim"
+  use { 'numToStr/Comment.nvim' }
+  use { "ray-x/lsp_signature.nvim" }
+  use 'voldikss/vim-floaterm'
 end)
