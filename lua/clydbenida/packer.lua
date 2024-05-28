@@ -45,8 +45,12 @@ return require('packer').startup(function(use)
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
+    "kabouzeid/nvim-lspinstall",
   }
   use('mfussenegger/nvim-lint')
   use('stevearc/conform.nvim')
   use('norcalli/nvim-colorizer.lua')
+  use { 'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async' }
+  use "lukas-reineke/indent-blankline.nvim"
+  use "luukvbaal/statuscol.nvim"
 end)
