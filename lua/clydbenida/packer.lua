@@ -28,12 +28,13 @@ return require('packer').startup(function(use)
       vim.cmd('colorscheme cyberdream')
     end }
 
-  use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
-  use('nvim-treesitter/playground')
-  use('theprimeagen/harpoon')
-  use('mbbill/undotree')
-  use('tpope/vim-fugitive')
-  use('tpope/vim-eunuch')
+  use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
+  use("nvim-treesitter/playground")
+  use("theprimeagen/harpoon")
+  use("mbbill/undotree")
+  use("tpope/vim-fugitive")
+  use("tpope/vim-eunuch")
+  use("tpope/vim-surround")
   use {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v3.x',
@@ -54,10 +55,10 @@ return require('packer').startup(function(use)
   use('mfussenegger/nvim-lint')
   use('stevearc/conform.nvim')
   use('norcalli/nvim-colorizer.lua')
-  use { 'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async' }
-  use "lukas-reineke/indent-blankline.nvim"
-  use "luukvbaal/statuscol.nvim"
-  use { 'numToStr/Comment.nvim' }
-  use { "ray-x/lsp_signature.nvim" }
-  use 'voldikss/vim-floaterm'
+  use({ 'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async' })
+  use("lukas-reineke/indent-blankline.nvim")
+  use("luukvbaal/statuscol.nvim")
+  use('numToStr/Comment.nvim')
+  use("ray-x/lsp_signature.nvim")
+  use('voldikss/vim-floaterm')
 end)
