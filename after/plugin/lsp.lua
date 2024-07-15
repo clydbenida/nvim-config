@@ -17,7 +17,16 @@ require('mason').setup({})
 require('mason-lspconfig').setup({
   -- Replace the language servers listed here
   -- with the ones you want to install
-  ensure_installed = { 'tsserver', 'eslint', 'cssls', 'cssmodules_ls', 'lua_ls' },
+  ensure_installed = { 'tsserver', 'eslint', 'cssls', 'cssmodules_ls', 'lua_ls', 'pylsp' },
+  settings = {
+    Lua = {
+      workspace = { checkThirdParty = false, library = vim.api.nvim_get_runtime_file("", true) },
+      telemetry = { enable = false },
+      diagnostics = {
+        globals = { "vim" },
+      },
+    },
+  },
   handlers = {
     function(server_name)
       require('lspconfig')[server_name].setup({})
