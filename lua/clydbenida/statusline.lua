@@ -1,35 +1,35 @@
--- Status Line
+local icon = require("nvim-web-devicons")
 
 local function vim_mode()
   local modes = {
     n = 'NORMAL',
     i = 'INSERT',
     v = 'VISUAL',
-    V = 'V-LINE',
-    ['␖'] = 'V-BLOCK', -- This is <C-v> in Lua
+    V = 'VISUAL',
+    ['␖'] = 'VISUAL', -- This is <C-v> in Lua
     c = 'COMMAND',
-    no = 'OPERATOR PENDING',
-    s = 'SELECT',
-    S = 'S-LINE',
-    ['␓'] = 'S-BLOCK', -- This is <C-s> in Lua
-    ic = 'INSERT COMPLETING',
     R = 'REPLACE',
-    Rv = 'V-REPLACE',
-    cv = 'VIM EX',
-    ce = 'NORMAL EX',
-    r = 'PROMPT',
-    rm = 'MORE',
-    ['r?'] = 'CONFIRM',
-    ['!'] = 'SHELL',
-    t = 'TERMINAL',
   }
-  return modes[vim.fn.mode()] .. " | " or 'UNKNOWN'
+  local current_mode = vim.api.nvim_get_mode().mode
+
+  return modes[current_mode] or 'UNKNOWN'
+end
+
+local function mode_color()
+  local mode_col_groups = {
+    NORMAL = "StatusLineNormal",
+    VISUAL = "StatusLineVisual",
+    INSERT = "StatusLineInsert",
+    COMMAND = "StatusLineCommand",
+    REPLACE = "StatusLineReplace",
+  }
+  return mode_col_groups[vim_mode()] or 'StatusLine'
 end
 
 local function branch_name()
   local branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")
   if branch ~= "" then
-    return branch .. " | "
+    return branch
   else
     return ""
   end
@@ -50,40 +50,75 @@ local function file_name()
 end
 
 local function progress()
-  local cur_coords = "%5.(%l:%c%V%)"
+  local cur_coords = "%l:%c%V%"
   if vim.fn.line(".") == 1 then
-    return "top |" .. cur_coords
+    return "top | " .. cur_coords
   elseif vim.fn.line(".") == vim.fn.line("$") then
     return "bot | " .. cur_coords
   else
     local p = vim.fn.line(".") / vim.fn.line("$") * 100
     -- p = p % 1 >= .5 and math.ceil(p) or math.floor(p)
-    return string.format("| %02d", p) .. "%% | %5.(%l:%c%V%)"
+    return "%#" .. "StatusLineSecondary" .. "#"
+        .. string.format(" ◀ %02d", p)
+        .. "%% "
+        .. "%#" .. "StatusLine" .. "#"
+        .. "%#" .. mode_color() .. "#"
+        .. " ◀ %5.(" .. cur_coords .. ") "
+        .. "%#" .. "StatusLine" .. "#"
   end
 end
 
+local function get_file_ext()
+  return vim.fn.expand("%:e")
+end
+
+-- Should be only used for details that are not updating constantly
 vim.api.nvim_create_autocmd({ "FileType", "BufEnter", "FocusGained" }, {
   callback = function()
+    -- Status colors
+    local function setStatusColors()
+      vim.api.nvim_set_hl(0, 'StatusLineNormal', { fg = '#ffffff', bg = '#005f87', bold = true })
+      vim.api.nvim_set_hl(0, 'StatusLineInsert', { fg = '#ffffff', bg = '#919f0e', bold = true })
+      vim.api.nvim_set_hl(0, 'StatusLineVisual', { fg = '#ffffff', bg = '#875f00', bold = true })
+      vim.api.nvim_set_hl(0, 'StatusLineReplace', { fg = '#ffffff', bg = '#870000', bold = true })
+      vim.api.nvim_set_hl(0, 'StatusLineCommand', { fg = '#ffffff', bg = '#696969', bold = true })
+      vim.api.nvim_set_hl(0, 'StatusLineSecondary', { fg = '#ffffff', bg = '#545454', bold = true }) -- Default statusline
+      vim.api.nvim_set_hl(0, 'StatusLine', { fg = '#ffffff', bg = '#303030', bold = true })          -- Default statusline
+    end
+
+    local file_ext = vim.fn.expand("%:e")
+    local file_icon = icon.get_icon("", file_ext)
+
+    setStatusColors()
+    vim.b.file_icon = file_icon or "ERROR"
     vim.b.branch_name = branch_name()
     vim.b.file_name = file_name()
-    vim.b.vim_mode = vim_mode()
   end
 })
 
 function Status_Line()
-  return " "
-      .. vim.b.vim_mode
+  return "%#" .. mode_color() .. "#"
+      .. " "
+      .. vim_mode()
+      .. " ▶ "
+      .. "%#" .. "StatusLine" .. "#"
+      .. "%#" .. "StatusLineSecondary" .. "#"
+      .. " "
       .. "%<"
       .. vim.b.branch_name
+      .. " ▶ "
+      .. "%#" .. "StatusLine" .. "#"
+      .. " "
       .. vim.b.file_name
       .. " "
       .. "%h"
       .. "%m"
       .. "%="
-      .. "%y"
+      .. vim.b.file_icon
+      .. " "
+      .. get_file_ext()
       .. " "
       .. progress()
-      .. " "
 end
 
-vim.opt.statusline = "%{%v:lua.Status_Line()%}"
+vim.o.statusline = "%{%v:lua.Status_Line()%}"

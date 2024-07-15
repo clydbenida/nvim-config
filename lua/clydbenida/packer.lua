@@ -35,6 +35,7 @@ return require('packer').startup(function(use)
   use("tpope/vim-fugitive")
   use("tpope/vim-eunuch")
   use("tpope/vim-surround")
+  use('nvim-tree/nvim-web-devicons')
   use {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v3.x',
