@@ -50,7 +50,7 @@ local function file_name()
 end
 
 local function progress()
-  local cur_coords = "%l:%c%V%"
+  local cur_coords = "Ln %l, Col %c%V%"
   if vim.fn.line(".") == 1 then
     return "top | " .. cur_coords
   elseif vim.fn.line(".") == vim.fn.line("$") then
@@ -63,7 +63,7 @@ local function progress()
         .. "%% "
         .. "%#" .. "StatusLine" .. "#"
         .. "%#" .. mode_color() .. "#"
-        .. " ◀ %5.(" .. cur_coords .. ") "
+        .. " ◀ %14.(" .. cur_coords .. ") "
         .. "%#" .. "StatusLine" .. "#"
   end
 end
@@ -90,7 +90,7 @@ vim.api.nvim_create_autocmd({ "FileType", "BufEnter", "FocusGained" }, {
     local file_icon = icon.get_icon("", file_ext)
 
     setStatusColors()
-    vim.b.file_icon = file_icon or "ERROR"
+    vim.b.file_icon = file_icon or ""
     vim.b.branch_name = branch_name()
     vim.b.file_name = file_name()
   end
