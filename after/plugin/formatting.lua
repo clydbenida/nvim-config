@@ -12,6 +12,8 @@ conform.setup({
     python = { "isort", "black" },
     -- Use a sub-list to run only the first available formatter
     javascript = { { "prettierd", "prettier" } },
+    typescript = { "prettier" },
+    typescriptreact = { "prettier" },
   },
 
   -- format_on_save = {

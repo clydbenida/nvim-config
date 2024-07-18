@@ -13,6 +13,7 @@ return require('packer').startup(function(use)
     requires = { { 'nvim-lua/plenary.nvim' } }
   }
 
+  -- Themes
   -- use({
   --   'rose-pine/neovim',
   --   as = 'rose-pine',
@@ -20,13 +21,23 @@ return require('packer').startup(function(use)
   --     vim.cmd('colorscheme rose-pine')
   --   end
   -- })
-
-  use {
-    "scottmckendry/cyberdream.nvim",
-    as = "cyberdream",
+  -- use({
+  --   "scottmckendry/cyberdream.nvim",
+  --   as = "cyberdream",
+  --   config = function()
+  --     vim.cmd('colorscheme cyberdream')
+  --   end
+  -- })
+  use({
+    "ellisonleao/gruvbox.nvim",
+    as = "gruvbox",
+    setup = {
+      transparent_mode = true,
+    },
     config = function()
-      vim.cmd('colorscheme cyberdream')
-    end }
+      vim.cmd('colorscheme gruvbox')
+    end
+  })
 
   use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
   use("nvim-treesitter/playground")
