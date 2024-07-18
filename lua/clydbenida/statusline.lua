@@ -51,21 +51,22 @@ end
 
 local function progress()
   local cur_coords = "Ln %l, Col %c%V%"
+  local cur_pos = ""
   if vim.fn.line(".") == 1 then
-    return "top | " .. cur_coords
+    cur_pos = " ◀ top "
   elseif vim.fn.line(".") == vim.fn.line("$") then
-    return "bot | " .. cur_coords
+    cur_pos = " ◀ bot "
   else
     local p = vim.fn.line(".") / vim.fn.line("$") * 100
+    cur_pos = string.format(" ◀ %02d", p) .. "%% "
     -- p = p % 1 >= .5 and math.ceil(p) or math.floor(p)
-    return "%#" .. "StatusLineSecondary" .. "#"
-        .. string.format(" ◀ %02d", p)
-        .. "%% "
-        .. "%#" .. "StatusLine" .. "#"
-        .. "%#" .. mode_color() .. "#"
-        .. " ◀ %14.(" .. cur_coords .. ") "
-        .. "%#" .. "StatusLine" .. "#"
   end
+  return "%#" .. "StatusLineSecondary" .. "#"
+      .. cur_pos
+      .. "%#" .. "StatusLine" .. "#"
+      .. "%#" .. mode_color() .. "#"
+      .. " ◀ %14.(" .. cur_coords .. ") "
+      .. "%#" .. "StatusLine" .. "#"
 end
 
 local function get_file_ext()
